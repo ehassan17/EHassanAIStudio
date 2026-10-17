@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0047AB">
+<title>EHassanAIStudio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:white;font-family:Arial,sans-serif}
+header{background:#0047AB;padding:25px 18px;border-bottom:4px solid #e63946}
+header h1{font-size:26px}
+header p{color:#fff}
+main{max-width:650px;margin:auto;padding:18px}
+.card{background:#111e30;border:1px solid #30445e;border-radius:14px;padding:18px;margin:18px 0}
+h2{color:#ffd700}
+label{display:block;margin:15px 0 8px}
+textarea,select{width:100%;padding:13px;border-radius:8px;border:1px solid #536780;background:#07111f;color:white;font-size:16px}
+textarea{min-height:110px}
+button{padding:13px;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
+.primary{background:#ffd700;color:#07111f;width:100%;margin-top:12px}
+.secondary{background:#174477;color:white;margin-top:10px;margin-right:5px}
+.feature{padding:12px;background:#0a192b;border-radius:8px;margin:10px 0}
+.small{color:#b9c8da;line-height:1.6;font-size:14px}
+#result,#saved{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;margin-top:15px}
+footer{text-align:center;padding:25px;color:#b9c8da;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>EHassanAIStudio 🇱🇷</h1>
+<p>AI Content Creation & Automation</p>
+<p>Created by E Hassan Sheriff</p>
+</header>
+<main>
+<section class="card">
+<h2>🚀 Welcome to Your AI Studio</h2>
+<p class="small">Build ideas. Create content. Inspire the world.</p>
+</section>
+
+<section class="card">
+<h2>✍️ Content Creator</h2>
+<label for="topic">Enter your post topic</label>
+<textarea id="topic" placeholder="Example: Encourage young Liberians to learn technology"></textarea>
+
+<label for="style">Choose a style</label>
+<select id="style">
+<option>Motivational</option>
+<option>Educational</option>
+<option>Professional</option>
+<option>Inspirational</option>
+</select>
+
+<button class="primary" onclick="generatePost()">Generate Post</button>
+<div id="result"></div>
+<button class="secondary" onclick="copyPost()">Copy Post</button>
+<button class="secondary" onclick="savePost()">Save Post</button>
+</section>
+
+<section class="card">
+<h2>⚙️ Automation Dashboard</h2>
+<div class="feature">📝 Content drafting</div>
+<div class="feature">📅 Content planning</div>
+<div class="feature">💾 Saved posts on your device</div>
+<p class="small">Facebook publishing and connected AI services require additional setup and approved API access.</p>
+<button class="primary" onclick="showPosts()">View Saved Posts</button>
+<div id="saved"></div>
+</section>
+</main>
+<footer>
+EHassanAIStudio © 2026<br>
+Founded by E Hassan Sheriff 🇱🇷<br>
+Building intelligent tools for Africa.
+</footer>
+<script>
+function generatePost(){
+const topic=document.getElementById('topic').value.trim();
+const style=document.getElementById('style').value;
+if(!topic){alert('Please enter a topic first.');return;}
+const openings={
+Motivational:'Never give up on your dreams!',
+Educational:'Knowledge is the foundation of progress.',
+Professional:'Every great achievement begins with a clear plan.',
+Inspirational:'Your story can inspire the next generation.'
+};
+const post=openings[style]+'\n\n'+topic+'\n\nKeep learning, stay consistent, and take action every day.\n\n#EHassanAIStudio #Liberia #Innovation';
+document.getElementById('result').textContent=post;
+}
+function copyPost(){
+const text=document.getElementById('result').textContent;
+if(!text){alert('Generate a post first.');return;}
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(text).then(()=>alert('Post copied!')).catch(()=>alert('Please select and copy the text manually.'));
+}else{alert('Please select and copy the generated text manually.');}
+}
+function savePost(){
+const text=document.getElementById('result').textContent;
+if(!text){alert('Generate a post first.');return;}
+try{
+const posts=JSON.parse(localStorage.getItem('ehassanPosts')||'[]');
+posts.unshift({text:text,date:new Date().toLocaleString()});
+localStorage.setItem('ehassanPosts',JSON.stringify(posts.slice(0,50)));
+alert('Post saved on this device!');
+}catch(e){alert('Could not save the post.');}
+}
+function showPosts(){
+try{
+const posts=JSON.parse(localStorage.getItem('ehassanPosts')||'[]');
+document.getElementById('saved').textContent=posts.length?posts.map((p,i)=>(i+1)+'. '+p.date+'\n'+p.text).join('\n\n'):'No saved posts yet.';
+}catch(e){document.getElementById('saved').textContent='Unable to load saved posts.';}
+}
+</script>
+</body>
+  </html>
